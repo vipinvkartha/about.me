@@ -22,47 +22,12 @@ const { title } = Astro.props;
 </html>
 
 <style is:global>
-  :root {
-    --accent: 209, 213, 219;
-    --accent-light: 243, 244, 246;
-    --accent-dark: 31, 41, 55;
-  }
-  
-  @keyframes fadeIn {
-    from { 
-      opacity: 0; 
-      transform: translateY(20px); 
-    }
-    to { 
-      opacity: 1; 
-      transform: translateY(0); 
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(-20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-  }
-
-  .animate-slide-in {
-    animation: slideIn 0.5s ease-out forwards;
-  }
-
   html {
     font-family: 'Inter', system-ui, sans-serif;
-    background: #111827;
-    scroll-behavior: smooth;
+    background: #09090b;
     color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
@@ -74,56 +39,23 @@ const { title } = Astro.props;
     box-sizing: border-box;
   }
 
-  /* Add smooth reveal animation for sections */
   section {
     opacity: 0;
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 0.5s ease-out forwards;
   }
 
-  section:nth-child(1) { animation-delay: 0.2s; }
-  section:nth-child(2) { animation-delay: 0.4s; }
-  section:nth-child(3) { animation-delay: 0.6s; }
-
-  @keyframes ticker {
-    0% {
-      transform: translateX(0);
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(10px); 
     }
-    100% {
-      transform: translateX(-50%);
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
     }
   }
 
-  .skills-ticker-container {
-    position: relative;
-    width: 100%;
-    height: 40px;
-    overflow: hidden;
-    mask-image: linear-gradient(
-      to right,
-      transparent,
-      black 10%,
-      black 90%,
-      transparent
-    );
-  }
-
-  .skills-ticker {
-    position: absolute;
-    white-space: nowrap;
-    animation: ticker 30s linear infinite;
-    &:hover {
-      animation-play-state: paused;
-    }
-  }
-
-  .skills-ticker span {
-    display: inline-block;
-    transition: all 0.3s ease;
-  }
-
-  .skills-ticker span:hover {
-    transform: scale(1.1);
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
+  section:nth-child(1) { animation-delay: 0.1s; }
+  section:nth-child(2) { animation-delay: 0.2s; }
+  section:nth-child(3) { animation-delay: 0.3s; }
 </style>
