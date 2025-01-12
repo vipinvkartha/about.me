@@ -60,8 +60,68 @@ I combine technical excellence with a pragmatic approach to problem-solving, ens
       period: "July 2022 - Current",
       highlights: [
         "Working on the authentication team, utilizing Ruby on Rails, GoLang, TypeScript, AWS, and MySQL",
-        "Developing and maintaining microservice architecture",
+        "Developing and maintaining microservice architecture to enhance scalability and performance of authentication services",
+        "Collaborating closely with the infrastructure team",
         "Lead multiple initiatives including Captcha implementation for entire backend"
+      ]
+    },
+    {
+      company: "KeyValue Software Systems",
+      location: "Kochi, Kerala",
+      title: "Senior Software Engineer, Staff Software Engineer",
+      period: "April 2020 - July 2022",
+      highlights: [
+        "Built B2B product for small retail owners across Indonesia using NodeJS with TypeScript and GoLang",
+        "Implemented microservice architecture on AWS cloud infrastructure",
+        "Developed REST and GraphQL APIs, managed deployments using AWS CodePipeline",
+        "Implemented service monitoring using AWS CloudWatch",
+        "Built asynchronous operations using AWS SQS and S3"
+      ]
+    },
+    {
+      company: "Siemens Technology and Services",
+      location: "Bangalore, India",
+      title: "Software Engineer (L2)",
+      period: "Nov 2018 - April 2020",
+      highlights: [
+        "Backend Developer for IoT-based industrial devices project",
+        "Worked with C, C++ and NodeJS",
+        "Implemented various protocols including HART, MODBUS, OPCUA",
+        "Developed REST APIs",
+        "Handled physical layer hardware communication using RS485 and RS232 via Modbus protocol"
+      ]
+    },
+    {
+      company: "CitiusTech Healthcare Technology Pvt Ltd",
+      location: "Mumbai, India",
+      title: "Software Engineer",
+      period: "Sep 2017 - Nov 2018",
+      highlights: [
+        "Enhanced and maintained healthcare domain image viewer application",
+        "Specialized in VC++ and MFC development",
+        "Improved application performance and fixed critical defects"
+      ]
+    },
+    {
+      company: "HCL Technologies",
+      location: "Pune, India",
+      title: "Software Engineer",
+      period: "Oct 2016 - July 2017",
+      highlights: [
+        "Developed DFMPRO product using VC++ and CAA V6",
+        "Integrated DFMPRO with CATIA (CAD software)",
+        "Improved product functionality and user experience"
+      ]
+    },
+    {
+      company: "Aricent Technologies",
+      location: "Chennai, India",
+      title: "Software Engineer",
+      period: "Sep 2014 - Sep 2016",
+      highlights: [
+        "Maintained and developed customer product for live traffic decoding and analysis",
+        "Worked with C++ for both Linux and Windows platforms",
+        "Implemented cross-platform solutions and optimizations"
       ]
     }
   ]
@@ -140,11 +200,17 @@ I combine technical excellence with a pragmatic approach to problem-solving, ens
                       <div class="flex flex-col space-y-1 group">
                         <div class="flex justify-between items-center">
                           <span class="text-gray-300 font-medium group-hover:text-gray-100 transition-colors duration-300">{skill.name}</span>
-                          <span class="text-sm text-gray-400 group-hover:text-gray-200 transition-colors duration-300">{skill.level}/5</span>
+                          <div class="flex gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <span class={`text-sm ${star <= skill.level ? 'text-yellow-400' : 'text-gray-600'}`}>
+                                ★
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                        <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
                           <div 
-                            class="h-full bg-gradient-to-r from-gray-500 to-gray-300 transition-all duration-500 ease-out group-hover:from-gray-300 group-hover:to-gray-100"
+                            class="h-full bg-gradient-to-r from-yellow-500 to-yellow-300 transition-all duration-500 ease-out group-hover:from-yellow-400 group-hover:to-yellow-200"
                             style={`width: ${(skill.level / 5) * 100}%`}
                           ></div>
                         </div>
