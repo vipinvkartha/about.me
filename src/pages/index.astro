@@ -264,47 +264,32 @@ Known for delivering robust solutions that balance technical excellence with bus
       <!-- Experience -->
       <ScrollReveal class="section-card">
         <section class="section-content p-8 rounded-lg">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-sm uppercase tracking-widest text-zinc-500">Experience</h2>
-            <div class="flex gap-2">
-              <button 
-                id="prevExp" 
-                class="p-2 rounded-full text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300"
-                aria-label="Previous experience"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button 
-                id="nextExp" 
-                class="p-2 rounded-full text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300"
-                aria-label="Next experience"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </div>
+          <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">Experience</h2>
+          
+          <div class="timeline-flow">
+            {profile.experience.map((job, index) => (
+              <div class="timeline-item">
+                <!-- Timeline Node -->
+                <div class="timeline-node"></div>
 
-          <div class="experience-carousel relative overflow-hidden">
-            <div class="experience-track flex transition-transform duration-500 ease-out">
-              {profile.experience.map((job, index) => (
-                <div class="experience-slide w-full flex-shrink-0">
-                  <div class="experience-content p-6 bg-zinc-900/50 rounded-lg border border-zinc-800/50 hover:border-zinc-700/50 transition-all duration-300">
-                    <div class="flex flex-col gap-1 mb-4">
-                      <div class="flex items-center justify-between gap-4">
+                <!-- Curved Connecting Line -->
+                <div class="timeline-curve"></div>
+
+                <!-- Content -->
+                <div class="timeline-content">
+                  <div class="timeline-content-inner">
+                    <div class="timeline-header">
+                      <div class="timeline-company">
                         <h3 class="text-xl text-zinc-200 font-light">{job.company}</h3>
-                        <time class="text-sm text-zinc-500 whitespace-nowrap">{job.period}</time>
-                      </div>
-                      <div class="flex items-center justify-between gap-4">
                         <p class="text-sm text-zinc-400">{job.title}</p>
-                        <p class="text-sm text-zinc-600">{job.location}</p>
+                      </div>
+                      <div class="timeline-details">
+                        <time class="text-sm text-zinc-500 block">{job.period}</time>
+                        <p class="text-sm text-zinc-600 mt-1">{job.location}</p>
                       </div>
                     </div>
                     
-                    <ul class="space-y-2 text-sm text-zinc-400">
+                    <ul class="space-y-2 text-sm text-zinc-400 mt-4">
                       {job.highlights.map(highlight => (
                         <li class="flex items-start gap-3">
                           <span class="text-zinc-700 mt-1.5">―</span>
@@ -314,19 +299,8 @@ Known for delivering robust solutions that balance technical excellence with bus
                     </ul>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            <!-- Progress Indicators -->
-            <div class="flex justify-center gap-2 mt-6">
-              {profile.experience.map((_, index) => (
-                <button
-                  class="exp-indicator w-2 h-2 rounded-full bg-zinc-800 transition-all duration-300"
-                  data-index={index}
-                  aria-label={`Go to experience ${index + 1}`}
-                />
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </section>
       </ScrollReveal>
@@ -375,50 +349,6 @@ Known for delivering robust solutions that balance technical excellence with bus
 </div>
 
 <script>
-  let currentSlide = 0;
-  const totalSlides = document.querySelectorAll('.experience-slide').length;
-  const track = document.querySelector('.experience-track');
-  const prevBtn = document.getElementById('prevExp');
-  const nextBtn = document.getElementById('nextExp');
-  const indicators = document.querySelectorAll('.exp-indicator');
-
-  function updateSlide(index) {
-    currentSlide = index;
-    
-    // Update track position
-    track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    
-    // Update indicators
-    indicators.forEach((indicator, i) => {
-      if (i === currentSlide) {
-        indicator.classList.add('bg-zinc-400', 'scale-150');
-        indicator.classList.remove('bg-zinc-800');
-      } else {
-        indicator.classList.remove('bg-zinc-400', 'scale-150');
-        indicator.classList.add('bg-zinc-800');
-      }
-    });
-  }
-
-  // Initialize first slide
-  updateSlide(0);
-
-  // Event Listeners
-  prevBtn.addEventListener('click', () => {
-    const newIndex = currentSlide === 0 ? totalSlides - 1 : currentSlide - 1;
-    updateSlide(newIndex);
-  });
-
-  nextBtn.addEventListener('click', () => {
-    const newIndex = currentSlide === totalSlides - 1 ? 0 : currentSlide + 1;
-    updateSlide(newIndex);
-  });
-
-  // Add click handlers for indicators
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => updateSlide(index));
-  });
-
   const modal = document.getElementById('cvModal');
   const previewButton = document.getElementById('previewCV');
   const closeButton = document.getElementById('closeModal');
