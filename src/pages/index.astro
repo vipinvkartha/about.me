@@ -156,26 +156,54 @@ Known for delivering robust solutions that balance technical excellence with bus
               </div>
 
               <!-- Download CV Button -->
-              <a
-                href="/vipin_kartha_cv.pdf"
-                download
-                class="inline-flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 border border-zinc-800 rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-all duration-300"
-              >
-                <span>Download CV</span>
-                <svg 
-                  class="w-4 h-4" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
+              <div class="flex gap-3">
+                <a
+                  href="/vipin_kartha_cv.pdf"
+                  download
+                  class="inline-flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 border border-zinc-800 rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-all duration-300"
                 >
-                  <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    stroke-width="2" 
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              </a>
+                  <span>Download CV</span>
+                  <svg 
+                    class="w-4 h-4" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round" 
+                      stroke-width="2" 
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                </a>
+
+                <button
+                  id="previewCV"
+                  class="inline-flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 border border-zinc-800 rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-all duration-300"
+                >
+                  <span>Preview CV</span>
+                  <svg 
+                    class="w-4 h-4" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round" 
+                      stroke-width="2" 
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round" 
+                      stroke-width="2" 
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </header>
@@ -306,6 +334,46 @@ Known for delivering robust solutions that balance technical excellence with bus
   </main>
 </Layout>
 
+<div id="cvModal" class="fixed inset-0 bg-black/80 z-50 hidden overflow-y-auto">
+  <div class="min-h-screen px-4 flex items-center justify-center">
+    <div class="bg-zinc-900 rounded-lg max-w-4xl w-full relative">
+      <!-- Header -->
+      <div class="flex justify-between items-center p-4 border-b border-zinc-800">
+        <h3 class="text-lg font-medium text-zinc-200">Curriculum Vitae</h3>
+        <button 
+          id="closeModal" 
+          class="text-zinc-400 hover:text-zinc-200 transition-colors"
+          aria-label="Close modal"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Content -->
+      <div class="p-6">
+        <object
+          data="/vipin_kartha_cv.pdf"
+          type="application/pdf"
+          class="w-full h-[calc(100vh-12rem)] rounded"
+        >
+          <p class="text-zinc-400 text-center py-8">
+            Unable to display PDF. 
+            <a 
+              href="/vipin_kartha_cv.pdf" 
+              download 
+              class="text-blue-400 hover:text-blue-300 underline"
+            >
+              Download instead
+            </a>
+          </p>
+        </object>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   let currentSlide = 0;
   const totalSlides = document.querySelectorAll('.experience-slide').length;
@@ -349,5 +417,37 @@ Known for delivering robust solutions that balance technical excellence with bus
   // Add click handlers for indicators
   indicators.forEach((indicator, index) => {
     indicator.addEventListener('click', () => updateSlide(index));
+  });
+
+  const modal = document.getElementById('cvModal');
+  const previewButton = document.getElementById('previewCV');
+  const closeButton = document.getElementById('closeModal');
+
+  // Open modal
+  previewButton?.addEventListener('click', () => {
+    modal?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Close modal
+  closeButton?.addEventListener('click', () => {
+    modal?.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  });
+
+  // Close on outside click
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+  });
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
+      modal?.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
   });
 </script>
