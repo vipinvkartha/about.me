@@ -1,0 +1,29 @@
+---
+const { as: Element = 'div', class: className = '' } = Astro.props;
+---
+
+<Element class={`scroll-reveal ${className}`}>
+  <slot />
+</Element>
+
+<script>
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target); // Stop observing once revealed
+      }
+    });
+  }, observerOptions);
+
+  // Observe all scroll-reveal elements
+  document.querySelectorAll('.scroll-reveal').forEach(element => {
+    observer.observe(element);
+  });
+</script> 

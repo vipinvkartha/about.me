@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 
 const profile = {
   name: "Vipin V Kartha",
@@ -118,102 +119,235 @@ Known for delivering robust solutions that balance technical excellence with bus
 
 <Layout title={`${profile.name} - ${profile.title}`}>
   <main class="min-h-screen bg-zinc-950 py-12 px-4 text-zinc-100">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto space-y-20">
       <!-- Profile Header -->
-      <header class="mb-20 text-center">
-        <h1 class="text-4xl font-light mb-3 tracking-wide">{profile.name}</h1>
-        <p class="text-lg text-zinc-400 mb-2">{profile.title}</p>
-        <p class="text-sm text-zinc-500 mb-8">{profile.location}</p>
-        
-        <div class="flex justify-center gap-8 text-sm">
-          {Object.entries(profile.contact).map(([key, value]) => (
-            <a 
-              href={key === 'email' ? `mailto:${value}` : key === 'phone' ? `tel:${value}` : value} 
-              target={key === 'linkedin' || key === 'github' ? '_blank' : undefined}
-              class="text-zinc-400 hover:text-zinc-100 transition-colors duration-300"
-            >
-              {key === 'linkedin' ? 'LinkedIn' : key === 'github' ? 'GitHub' : value}
-            </a>
-          ))}
-        </div>
-      </header>
+      <ScrollReveal class="section-card">
+        <header class="section-content p-8 rounded-lg">
+          <div class="flex flex-col items-center">
+            <!-- Profile Image -->
+            <div class="mb-10 relative group">
+              <div class="absolute -inset-1 bg-gradient-to-r from-zinc-500 to-zinc-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div class="relative w-44 h-44 md:w-52 md:h-52 rounded-full overflow-hidden border-2 border-zinc-800/50 p-0.5">
+                <img
+                  src="/profile.jpg"
+                  alt="Vipin V Kartha"
+                  class="w-full h-full object-cover rounded-full filter transition-all duration-500 group-hover:scale-105"
+                />
+              </div>
+            </div>
+
+            <!-- Profile Info -->
+            <h1 class="text-4xl font-light mb-3 tracking-wide">{profile.name}</h1>
+            <p class="text-lg text-zinc-400 mb-2">{profile.title}</p>
+            <p class="text-sm text-zinc-500 mb-8">{profile.location}</p>
+            
+            <div class="flex flex-col items-center gap-6">
+              <!-- Contact Links -->
+              <div class="flex justify-center gap-8 text-sm">
+                {Object.entries(profile.contact).map(([key, value]) => (
+                  <a 
+                    href={key === 'email' ? `mailto:${value}` : key === 'phone' ? `tel:${value}` : value} 
+                    target={key === 'linkedin' || key === 'github' ? '_blank' : undefined}
+                    class="text-zinc-400 hover:text-zinc-100 transition-colors duration-300"
+                  >
+                    {key === 'linkedin' ? 'LinkedIn' : key === 'github' ? 'GitHub' : value}
+                  </a>
+                ))}
+              </div>
+
+              <!-- Download CV Button -->
+              <a
+                href="/vipin_kartha_cv.pdf"
+                download
+                class="inline-flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 border border-zinc-800 rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-all duration-300"
+              >
+                <span>Download CV</span>
+                <svg 
+                  class="w-4 h-4" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </header>
+      </ScrollReveal>
 
       <!-- About -->
-      <section class="mb-20">
-        <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">About</h2>
-        <div class="text-zinc-300 leading-relaxed space-y-4 font-light">
-          {profile.summary.split('\n\n').map((paragraph) => (
-            <p class={paragraph.startsWith('•') ? 'space-y-3' : ''}>
-              {paragraph.includes('•') 
-                ? paragraph.split('•').map((item, index) => 
-                    index === 0 
-                      ? item 
-                      : <div key={index} class="flex gap-3 text-zinc-400">
-                          <span class="text-zinc-600">―</span>
-                          <span>{item.trim()}</span>
-                        </div>
-                  )
-                : paragraph
-              }
-            </p>
-          ))}
-        </div>
-      </section>
+      <ScrollReveal class="section-card">
+        <section class="section-content p-8 rounded-lg">
+          <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">About</h2>
+          <div class="text-zinc-300 leading-relaxed space-y-4 font-light">
+            {profile.summary.split('\n\n').map((paragraph) => (
+              <p class={paragraph.startsWith('•') ? 'space-y-3' : ''}>
+                {paragraph.includes('•') 
+                  ? paragraph.split('•').map((item, index) => 
+                      index === 0 
+                        ? item 
+                        : <div key={index} class="flex gap-3 text-zinc-400">
+                            <span class="text-zinc-600">―</span>
+                            <span>{item.trim()}</span>
+                          </div>
+                    )
+                  : paragraph
+                }
+              </p>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
 
       <!-- Skills -->
-      <section class="mb-20">
-        <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">Skills</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {Object.entries(profile.skills).map(([category, skills]) => (
-            <div>
-              <h3 class="text-zinc-400 text-sm mb-3 capitalize">{category}</h3>
-              <div class="space-y-1.5">
-                {skills.map(skill => (
-                  <div class="flex items-center gap-2 text-sm">
-                    <span class="text-zinc-300 flex-1">{skill.name}</span>
-                    <div class="flex gap-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span class={`${star <= skill.level ? 'text-zinc-300' : 'text-zinc-800'} text-[10px]`}>
-                          ●
-                        </span>
-                      ))}
+      <ScrollReveal class="section-card">
+        <section class="section-content p-8 rounded-lg">
+          <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">Skills</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {Object.entries(profile.skills).map(([category, skills]) => (
+              <div>
+                <h3 class="text-zinc-400 text-sm mb-3 capitalize">{category}</h3>
+                <div class="space-y-1.5">
+                  {skills.map(skill => (
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="text-zinc-300 flex-1">{skill.name}</span>
+                      <div class="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span class={`${star <= skill.level ? 'text-zinc-300' : 'text-zinc-800'} text-[10px]`}>
+                            ●
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
 
       <!-- Experience -->
-      <section>
-        <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">Experience</h2>
-        <div class="space-y-12">
-          {profile.experience.map(job => (
-            <div class="group">
-              <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                <div>
-                  <h3 class="text-zinc-200 font-light">{job.company}</h3>
-                  <p class="text-sm text-zinc-400">{job.title}</p>
-                </div>
-                <div class="text-right mt-2 md:mt-0">
-                  <p class="text-sm text-zinc-500">{job.location}</p>
-                  <p class="text-sm text-zinc-600">{job.period}</p>
-                </div>
-              </div>
-              <ul class="space-y-2 text-sm text-zinc-400">
-                {job.highlights.map(highlight => (
-                  <li class="flex gap-3">
-                    <span class="text-zinc-700">―</span>
-                    <span>{highlight}</span>
-                  </li>
-                ))}
-              </ul>
+      <ScrollReveal class="section-card">
+        <section class="section-content p-8 rounded-lg">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-sm uppercase tracking-widest text-zinc-500">Experience</h2>
+            <div class="flex gap-2">
+              <button 
+                id="prevExp" 
+                class="p-2 rounded-full text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300"
+                aria-label="Previous experience"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button 
+                id="nextExp" 
+                class="p-2 rounded-full text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300"
+                aria-label="Next experience"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+
+          <div class="experience-carousel relative overflow-hidden">
+            <div class="experience-track flex transition-transform duration-500 ease-out">
+              {profile.experience.map((job, index) => (
+                <div class="experience-slide w-full flex-shrink-0">
+                  <div class="experience-content p-6 bg-zinc-900/50 rounded-lg border border-zinc-800/50 hover:border-zinc-700/50 transition-all duration-300">
+                    <div class="flex flex-col gap-1 mb-4">
+                      <div class="flex items-center justify-between gap-4">
+                        <h3 class="text-xl text-zinc-200 font-light">{job.company}</h3>
+                        <time class="text-sm text-zinc-500 whitespace-nowrap">{job.period}</time>
+                      </div>
+                      <div class="flex items-center justify-between gap-4">
+                        <p class="text-sm text-zinc-400">{job.title}</p>
+                        <p class="text-sm text-zinc-600">{job.location}</p>
+                      </div>
+                    </div>
+                    
+                    <ul class="space-y-2 text-sm text-zinc-400">
+                      {job.highlights.map(highlight => (
+                        <li class="flex items-start gap-3">
+                          <span class="text-zinc-700 mt-1.5">―</span>
+                          <span class="flex-1">{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <!-- Progress Indicators -->
+            <div class="flex justify-center gap-2 mt-6">
+              {profile.experience.map((_, index) => (
+                <button
+                  class="exp-indicator w-2 h-2 rounded-full bg-zinc-800 transition-all duration-300"
+                  data-index={index}
+                  aria-label={`Go to experience ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
     </div>
   </main>
 </Layout>
+
+<script>
+  let currentSlide = 0;
+  const totalSlides = document.querySelectorAll('.experience-slide').length;
+  const track = document.querySelector('.experience-track');
+  const prevBtn = document.getElementById('prevExp');
+  const nextBtn = document.getElementById('nextExp');
+  const indicators = document.querySelectorAll('.exp-indicator');
+
+  function updateSlide(index) {
+    currentSlide = index;
+    
+    // Update track position
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Update indicators
+    indicators.forEach((indicator, i) => {
+      if (i === currentSlide) {
+        indicator.classList.add('bg-zinc-400', 'scale-150');
+        indicator.classList.remove('bg-zinc-800');
+      } else {
+        indicator.classList.remove('bg-zinc-400', 'scale-150');
+        indicator.classList.add('bg-zinc-800');
+      }
+    });
+  }
+
+  // Initialize first slide
+  updateSlide(0);
+
+  // Event Listeners
+  prevBtn.addEventListener('click', () => {
+    const newIndex = currentSlide === 0 ? totalSlides - 1 : currentSlide - 1;
+    updateSlide(newIndex);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    const newIndex = currentSlide === totalSlides - 1 ? 0 : currentSlide + 1;
+    updateSlide(newIndex);
+  });
+
+  // Add click handlers for indicators
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => updateSlide(index));
+  });
+</script>
