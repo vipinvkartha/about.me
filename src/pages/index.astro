@@ -4,6 +4,11 @@ import ScrollReveal from '../components/ScrollReveal.astro';
 
 const profile = {
   name: "Vipin V Kartha",
+  firstName: "Vipin",
+  pronunciation: {
+    phonetic: "vi-pin",
+    audio: "/audio/vipin.mp3"
+  },
   title: "Senior Backend Engineer",
   location: "Berlin, Germany",
   contact: {
@@ -137,7 +142,29 @@ Known for delivering robust solutions that balance technical excellence with bus
             </div>
 
             <!-- Profile Info -->
-            <h1 class="text-4xl font-light mb-3 tracking-wide">{profile.name}</h1>
+            <h1 class="text-4xl font-light mb-2 tracking-wide">{profile.name}</h1>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-sm text-zinc-400 font-light tracking-wide" title="How to pronounce Vipin">
+                /{profile.pronunciation.phonetic}/
+              </span>
+              <button 
+                id="pronounceButton"
+                class="text-zinc-500 hover:text-zinc-300 transition-colors relative group"
+                title="Listen to pronunciation"
+                aria-label="Listen to name pronunciation"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                  />
+                </svg>
+                <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-zinc-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+              </button>
+              <audio id="pronounceAudio" src={profile.pronunciation.audio} preload="auto"></audio>
+            </div>
             <p class="text-lg text-zinc-400 mb-2">{profile.title}</p>
             <p class="text-sm text-zinc-500 mb-8">{profile.location}</p>
             
@@ -380,4 +407,27 @@ Known for delivering robust solutions that balance technical excellence with bus
       document.body.style.overflow = 'auto';
     }
   });
+
+  // Pronunciation audio playback
+  const pronounceButton = document.getElementById('pronounceButton');
+  const pronounceAudio = document.getElementById('pronounceAudio');
+  let isPlaying = false;
+
+  if (pronounceButton && pronounceAudio) {
+    pronounceButton.addEventListener('click', () => {
+      if (!isPlaying) {
+        isPlaying = true;
+        pronounceButton.classList.add('text-zinc-300');
+        
+        pronounceAudio.play().catch(error => {
+          console.error('Error playing audio:', error);
+        });
+
+        pronounceAudio.addEventListener('ended', () => {
+          isPlaying = false;
+          pronounceButton.classList.remove('text-zinc-300');
+        }, { once: true });
+      }
+    });
+  }
 </script>
