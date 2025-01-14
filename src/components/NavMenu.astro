@@ -1,0 +1,183 @@
+---
+const sections = [
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'experience', label: 'Experience' }
+];
+---
+
+<nav class="fixed left-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-3xl backdrop-blur-md border transition-all duration-500 flex flex-col gap-3 nav-container">
+  {sections.map(section => (
+    <a
+      href={`#${section.id}`}
+      class="relative px-5 py-3 text-sm rounded-2xl transition-all duration-300 nav-link group"
+      data-section={section.id}
+    >
+      <div class="nav-glow"></div>
+      <div class="relative z-10 flex items-center gap-4">
+        <div class="nav-dot"></div>
+        <span class="nav-text tracking-wide">{section.label}</span>
+      </div>
+    </a>
+  ))}
+</nav>
+
+<style>
+  .nav-container {
+    background: var(--nav-bg);
+    border-color: var(--nav-border);
+    box-shadow: var(--nav-shadow);
+    min-width: 200px;
+  }
+
+  .nav-link {
+    color: var(--text-secondary);
+    overflow: hidden;
+  }
+
+  .nav-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--highlight-glow) 50%,
+      transparent
+    );
+    opacity: 0;
+    transition: all 0.5s ease;
+  }
+
+  .nav-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .nav-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: var(--highlight-glow);
+    opacity: 0;
+    transition: all 0.5s ease;
+  }
+
+  .nav-text {
+    opacity: 0.8;
+    transform: translateX(0);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .nav-link:hover .nav-glow {
+    opacity: 0.1;
+    transform: translateX(-50%) scale(1.5);
+  }
+
+  .nav-link:hover .nav-dot {
+    opacity: 0.8;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px var(--highlight-glow);
+  }
+
+  .nav-link[data-active="true"] {
+    color: var(--text-primary);
+  }
+
+  .nav-link[data-active="true"] .nav-glow {
+    opacity: 0.15;
+  }
+
+  .nav-link[data-active="true"] .nav-dot {
+    opacity: 1;
+    transform: scale(1.4);
+    box-shadow: 0 0 15px var(--highlight-glow);
+  }
+
+  .nav-link[data-active="true"] .nav-dot::after {
+    opacity: 0.5;
+    animation: pulse 2s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+
+  @media (max-width: 1024px) {
+    .nav-container {
+      left: 1rem;
+      min-width: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-container {
+      left: 0.5rem;
+      padding: 0.75rem;
+    }
+
+    .nav-link {
+      padding: 0.75rem;
+    }
+
+    .nav-text {
+      display: none;
+    }
+
+    .nav-dot {
+      width: 0.625rem;
+      height: 0.625rem;
+    }
+  }
+</style>
+
+<script>
+  // Smooth scroll handler
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href')?.slice(1);
+      const targetElement = document.getElementById(targetId || '');
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Active section tracker
+  const observerOptions = {
+    root: null,
+    rootMargin: '-50% 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const sectionId = entry.target.id;
+      const menuItem = document.querySelector(`[data-section="${sectionId}"]`);
+      if (entry.isIntersecting) {
+        menuItem?.setAttribute('data-active', 'true');
+      } else {
+        menuItem?.setAttribute('data-active', 'false');
+      }
+    });
+  }, observerOptions);
+
+  // Observe all sections
+  document.querySelectorAll('section[id]').forEach(section => {
+    observer.observe(section);
+  });
+</script> 

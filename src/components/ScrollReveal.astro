@@ -3,21 +3,28 @@ const { as: Element = 'div', class: className = '' } = Astro.props;
 ---
 
 <Element class={`scroll-reveal ${className}`}>
-  <slot />
+  <div class="reveal-content">
+    <slot />
+  </div>
 </Element>
 
 <script>
   const observerOptions = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0.1
+    rootMargin: '-50px',  // Trigger slightly before element comes into view
+    threshold: 0.15
   };
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('revealed');
-        observer.unobserve(entry.target); // Stop observing once revealed
+        
+        // Add active class to highlight current section
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+          el.classList.remove('active-section');
+        });
+        entry.target.classList.add('active-section');
       }
     });
   }, observerOptions);

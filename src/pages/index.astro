@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
+import NavMenu from '../components/NavMenu.astro';
 
 const profile = {
   name: "Vipin V Kartha",
@@ -124,7 +125,8 @@ Known for delivering robust solutions that balance technical excellence with bus
 ---
 
 <Layout title={`${profile.name} - ${profile.title}`}>
-  <main class="min-h-screen bg-zinc-950 py-12 px-4 text-zinc-100">
+  <NavMenu />
+  <main class="min-h-screen bg-zinc-950 py-12 pl-24 pr-4 md:pl-32 text-zinc-100">
     <div class="max-w-3xl mx-auto space-y-20">
       <!-- Profile Header -->
       <ScrollReveal class="section-card">
@@ -261,7 +263,7 @@ Known for delivering robust solutions that balance technical excellence with bus
 
                 <button
                   id="previewCV"
-                  class="inline-flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 border border-zinc-800 rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-all duration-300"
+                  class="group relative inline-flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 border border-zinc-800 rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-all duration-300"
                 >
                   <span>Preview CV</span>
                   <svg 
@@ -283,6 +285,40 @@ Known for delivering robust solutions that balance technical excellence with bus
                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     />
                   </svg>
+
+                  <!-- Hover Preview -->
+                  <div class="preview-popup opacity-0 invisible group-hover:opacity-100 group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-4 w-96 bg-zinc-900 rounded-lg border border-zinc-800 shadow-xl transition-all duration-300 z-50">
+                    <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
+                      <h3 class="text-sm font-medium text-zinc-200">CV Preview</h3>
+                      <a 
+                        href="/vipin_kartha_cv.pdf" 
+                        target="_blank"
+                        class="text-xs text-zinc-400 hover:text-zinc-200 transition-colors"
+                      >
+                        Open in new tab
+                      </a>
+                    </div>
+                    <div class="relative w-full aspect-[1/1.4] rounded-b-lg overflow-hidden">
+                      <object
+                        data="/vipin_kartha_cv.pdf"
+                        type="application/pdf"
+                        class="absolute inset-0 w-full h-full"
+                      >
+                        <div class="flex items-center justify-center h-full p-4 text-center">
+                          <p class="text-zinc-400 text-sm">
+                            Unable to display PDF preview. 
+                            <a 
+                              href="/vipin_kartha_cv.pdf" 
+                              download 
+                              class="text-blue-400 hover:text-blue-300 underline"
+                            >
+                              Download instead
+                            </a>
+                          </p>
+                        </div>
+                      </object>
+                    </div>
+                  </div>
                 </button>
               </div>
             </div>
@@ -292,7 +328,7 @@ Known for delivering robust solutions that balance technical excellence with bus
 
       <!-- About -->
       <ScrollReveal class="section-card">
-        <section class="section-content p-8 rounded-lg">
+        <section id="about" class="section-content p-8 rounded-lg">
           <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">About</h2>
           <div class="text-zinc-300 leading-relaxed space-y-4 font-light">
             {profile.summary.split('\n\n').map((paragraph) => (
@@ -316,7 +352,7 @@ Known for delivering robust solutions that balance technical excellence with bus
 
       <!-- Skills -->
       <ScrollReveal class="section-card">
-        <section class="section-content p-8 rounded-lg">
+        <section id="skills" class="section-content p-8 rounded-lg">
           <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">Skills</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {Object.entries(profile.skills).map(([category, skills]) => (
@@ -344,41 +380,35 @@ Known for delivering robust solutions that balance technical excellence with bus
 
       <!-- Experience -->
       <ScrollReveal class="section-card">
-        <section class="section-content p-8 rounded-lg">
-          <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-6">Experience</h2>
+        <section id="experience" class="section-content p-8 rounded-lg">
+          <h2 class="text-sm uppercase tracking-widest text-zinc-500 mb-12">Experience</h2>
           
           <div class="timeline-flow">
             {profile.experience.map((job, index) => (
               <div class="timeline-item">
-                <!-- Timeline Node -->
                 <div class="timeline-node"></div>
-
-                <!-- Curved Connecting Line -->
                 <div class="timeline-curve"></div>
-
-                <!-- Content -->
+                
                 <div class="timeline-content">
-                  <div class="timeline-content-inner">
-                    <div class="timeline-header">
-                      <div class="timeline-company">
-                        <h3 class="text-xl text-zinc-200 font-light">{job.company}</h3>
-                        <p class="text-sm text-zinc-400">{job.title}</p>
-                      </div>
-                      <div class="timeline-details">
-                        <time class="text-sm text-zinc-500 block">{job.period}</time>
-                        <p class="text-sm text-zinc-600 mt-1">{job.location}</p>
-                      </div>
+                  <div class="timeline-header">
+                    <div class="timeline-company">
+                      <h3 class="text-xl text-zinc-200 font-light mb-1">{job.company}</h3>
+                      <p class="text-sm text-zinc-400">{job.title}</p>
                     </div>
-                    
-                    <ul class="space-y-2 text-sm text-zinc-400 mt-4">
-                      {job.highlights.map(highlight => (
-                        <li class="flex items-start gap-3">
-                          <span class="text-zinc-700 mt-1.5">―</span>
-                          <span class="flex-1">{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div class="timeline-details">
+                      <time class="text-sm text-zinc-500 block mb-1">{job.period}</time>
+                      <p class="text-sm text-zinc-600">{job.location}</p>
+                    </div>
                   </div>
+                  
+                  <ul class="space-y-2 text-sm text-zinc-400">
+                    {job.highlights.map(highlight => (
+                      <li class="flex items-start gap-3">
+                        <span class="text-zinc-700 mt-1.5">―</span>
+                        <span class="flex-1">{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             ))}
