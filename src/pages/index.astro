@@ -29,22 +29,22 @@ Specialized in:
 Known for delivering robust solutions that balance technical excellence with business objectives.`,
   skills: {
     core: [
-      { name: "Golang", level: 5 },
+      { name: "Golang", level: 4 },
       { name: "Node.js/TypeScript", level: 4 },
-      { name: "Ruby on Rails", level: 4 },
-      { name: "REST/GraphQL APIs", level: 5 }
+      { name: "Ruby on Rails", level: 3 },
+      { name: "C++", level: 4 }
     ],
     cloud: [
       { name: "AWS Services", level: 4 },
-      { name: "Docker", level: 4 },
-      { name: "Microservices", level: 5 },
-      { name: "CI/CD", level: 4 }
+      { name: "Docker", level: 3 },
+      { name: "Microservices", level: 4 },
+      { name: "CI/CD", level: 3 }
     ],
     data: [
-      { name: "MySQL", level: 5 },
+      { name: "MySQL", level: 4 },
       { name: "DynamoDB", level: 4 },
-      { name: "ElasticSearch", level: 4 },
-      { name: "Redis", level: 4 }
+      { name: "ElasticSearch", level: 3 },
+      { name: "Redis", level: 3 }
     ]
   },
   experience: [
@@ -296,13 +296,9 @@ Known for delivering robust solutions that balance technical excellence with bus
                   {skills.map(skill => (
                     <div class="flex items-center gap-2 text-sm">
                       <span class="text-zinc-300 flex-1">{skill.name}</span>
-                      <div class="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <span class={`${star <= skill.level ? 'text-zinc-300' : 'text-zinc-800'} text-[10px]`}>
-                            ●
-                          </span>
-                        ))}
-                      </div>
+                      <span class="text-zinc-500 tabular-nums">
+                        {skill.level}<span class="text-zinc-800">/</span>5
+                      </span>
                     </div>
                   ))}
                 </div>
