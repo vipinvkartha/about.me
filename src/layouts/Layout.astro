@@ -1,23 +1,41 @@
 ---
-import ThemeToggle from '../components/ThemeToggle.astro';
-
 interface Props {
   title: string;
+  description: string;
+  schema?: Record<string, unknown>;
 }
 
-const { title } = Astro.props;
+const { title, description, schema } = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL('/profile.jpg', Astro.site);
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Professional profile and portfolio" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Link previews on LinkedIn, Slack, WhatsApp and similar -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary" />
+    {schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <script is:inline>
+      // Lets CSS hide sections for the scroll animation only when JavaScript runs
+      document.documentElement.classList.add('js');
+
       // Initialize theme
       const theme = (() => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -28,7 +46,7 @@ const { title } = Astro.props;
         }
         return 'light';
       })();
-      
+
       if (theme === 'light') {
         document.documentElement.classList.remove('dark');
       } else {
@@ -54,15 +72,12 @@ const { title } = Astro.props;
     --border-secondary: #d1d5db; /* Medium border */
     --hover-bg: rgba(243, 244, 246, 0.8); /* Soft hover state */
     --timeline-line: #d1d5db; /* Timeline color */
-    --card-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06), 
+    --card-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06),
                   0 4px 6px -1px rgba(0, 0, 0, 0.08);
     --highlight-glow: rgba(59, 130, 246, 0.5); /* Blue glow for light theme */
-    --nav-bg: rgba(255, 255, 255, 0.85);
-    --nav-border: rgba(226, 232, 240, 0.2);
-    --nav-shadow: 
-      0 4px 6px -1px rgba(0, 0, 0, 0.05),
-      0 2px 4px -1px rgba(0, 0, 0, 0.03),
-      0 -2px 12px -4px rgba(255, 255, 255, 0.4);
+    --nav-bg: rgba(255, 255, 255, 0.8);
+    --nav-border: rgba(226, 232, 240, 0.8);
+    --nav-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1);
     --nav-hover: rgba(241, 245, 249, 0.8);
     --nav-active: rgba(226, 232, 240, 0.8);
   }
@@ -78,15 +93,12 @@ const { title } = Astro.props;
     --border-secondary: #3f3f46;
     --hover-bg: rgba(39, 39, 42, 0.8);
     --timeline-line: #3f3f46;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2),
                   0 2px 4px -1px rgba(0, 0, 0, 0.1);
     --highlight-glow: rgba(59, 130, 246, 0.3); /* Subtle blue glow for dark theme */
-    --nav-bg: rgba(17, 17, 17, 0.85);
-    --nav-border: rgba(63, 63, 70, 0.2);
-    --nav-shadow: 
-      0 4px 6px -1px rgba(0, 0, 0, 0.2),
-      0 2px 4px -1px rgba(0, 0, 0, 0.1),
-      0 -2px 12px -4px rgba(0, 0, 0, 0.8);
+    --nav-bg: rgba(24, 24, 27, 0.8);
+    --nav-border: rgba(63, 63, 70, 0.5);
+    --nav-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
     --nav-hover: rgba(39, 39, 42, 0.8);
     --nav-active: rgba(63, 63, 70, 0.8);
   }
@@ -96,6 +108,7 @@ const { title } = Astro.props;
     background: var(--bg-primary);
     color: var(--text-primary);
     transition: all 0.3s ease;
+    scroll-behavior: smooth;
   }
 
   /* Section styles */
@@ -103,23 +116,12 @@ const { title } = Astro.props;
     background: var(--bg-secondary);
     border-color: var(--border-primary);
     box-shadow: var(--card-shadow);
-    transition: all 0.3s ease;
+    scroll-margin-top: 2rem;
   }
 
   .section-content:hover {
     border-color: var(--border-secondary);
     transform: translateY(-2px);
-  }
-
-  /* Timeline styles */
-  .timeline-curve,
-  .timeline-curve::before {
-    background: var(--timeline-line);
-  }
-
-  .timeline-node {
-    background: var(--bg-secondary);
-    border-color: var(--border-secondary);
   }
 
   /* Theme toggle button styles */
@@ -130,53 +132,43 @@ const { title } = Astro.props;
   }
 
   /* Text colors */
-  .text-zinc-100, 
+  .text-zinc-100,
   .text-zinc-200 { color: var(--text-primary); }
-  
-  .text-zinc-300, 
+
+  .text-zinc-300,
   .text-zinc-400 { color: var(--text-secondary); }
-  
-  .text-zinc-500, 
+
+  .text-zinc-500,
   .text-zinc-600 { color: var(--text-tertiary); }
 
   /* Background colors */
   .bg-zinc-950,
   .bg-zinc-900,
-  .bg-zinc-900\/50 { 
-    background-color: var(--bg-primary); 
+  .bg-zinc-900\/50 {
+    background-color: var(--bg-primary);
   }
 
   /* Border colors */
   .border-zinc-800\/50,
-  .border-zinc-700\/50 { 
-    border-color: var(--border-primary); 
+  .border-zinc-700\/50 {
+    border-color: var(--border-primary);
   }
 
   /* Hover states */
-  .hover\:bg-zinc-800\/50:hover { 
-    background-color: var(--hover-bg); 
+  .hover\:bg-zinc-800\/50:hover {
+    background-color: var(--hover-bg);
   }
 
   .hover\:border-zinc-700\/50:hover,
-  .hover\:border-zinc-600\/50:hover { 
-    border-color: var(--border-secondary); 
-  }
-
-  /* Experience card styles */
-  .experience-content {
-    background: var(--bg-secondary);
-    border-color: var(--border-primary);
-    box-shadow: var(--card-shadow);
-  }
-
-  .experience-content:hover {
+  .hover\:border-zinc-600\/50:hover {
     border-color: var(--border-secondary);
-    transform: translateY(-2px);
   }
 
-  /* Skill dots */
-  .text-\[10px\] { 
-    color: var(--text-tertiary); 
+  /* Skill tags */
+  .skill-tag {
+    background: var(--bg-primary);
+    border-color: var(--border-primary);
+    color: var(--text-secondary);
   }
 
   /* Modal styles */
@@ -197,7 +189,7 @@ const { title } = Astro.props;
   .timeline-item {
     position: relative;
     padding-left: 3rem;
-    margin-bottom: 4rem; /* Increased spacing between items */
+    margin-bottom: 4rem;
     width: 100%;
   }
 
@@ -222,9 +214,14 @@ const { title } = Astro.props;
     left: 0.45rem;
     top: 2.5rem;
     width: 2px;
-    height: calc(100% + 2rem); /* Extended line height */
+    height: calc(100% + 2rem);
     background: var(--timeline-line);
     z-index: 1;
+  }
+
+  /* Hide the connecting line for the last item */
+  .timeline-item:last-child .timeline-curve {
+    display: none;
   }
 
   .timeline-content {
@@ -234,7 +231,6 @@ const { title } = Astro.props;
     padding: 1.5rem;
     margin-left: 1rem;
     box-shadow: var(--card-shadow);
-    transition: all 0.3s ease;
   }
 
   .timeline-content:hover {
@@ -246,15 +242,11 @@ const { title } = Astro.props;
   .timeline-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: baseline;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-primary);
-  }
-
-  .timeline-company {
-    flex: 1;
   }
 
   .timeline-details {
@@ -262,16 +254,10 @@ const { title } = Astro.props;
     flex-shrink: 0;
   }
 
-  /* Hide the connecting line for the last item */
-  .timeline-item:last-child .timeline-curve {
-    display: none;
-  }
-
-  /* Responsive adjustments */
   @media (max-width: 640px) {
     .timeline-header {
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.25rem;
     }
 
     .timeline-details {
@@ -279,31 +265,41 @@ const { title } = Astro.props;
     }
 
     .timeline-item {
-      padding-left: 2rem;
+      padding-left: 1.5rem;
     }
 
     .timeline-content {
-      margin-left: 0.5rem;
+      margin-left: 0.25rem;
+      padding: 1.25rem;
     }
+  }
+
+  /* Smooth out all transitions */
+  .section-content,
+  .timeline-content,
+  .timeline-node,
+  .timeline-curve {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Scroll reveal animations */
   .scroll-reveal {
-    opacity: 0;
-    transform: translateY(30px);
+    position: relative;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .scroll-reveal.revealed {
-    opacity: 1;
-    transform: translateY(0);
+  .js .scroll-reveal:not(.revealed) {
+    opacity: 0;
+    transform: translateY(30px);
   }
+
+  /* Stagger the reveal of sections */
+  .scroll-reveal:nth-child(1) { transition-delay: 0.1s; }
+  .scroll-reveal:nth-child(2) { transition-delay: 0.2s; }
+  .scroll-reveal:nth-child(3) { transition-delay: 0.3s; }
+  .scroll-reveal:nth-child(4) { transition-delay: 0.4s; }
 
   /* Active section highlight effects */
-  .scroll-reveal {
-    position: relative;
-  }
-
   .scroll-reveal::before {
     content: '';
     position: absolute;
@@ -330,20 +326,6 @@ const { title } = Astro.props;
                 0 8px 24px -8px rgba(0, 0, 0, 0.1);
   }
 
-  /* Stagger the reveal of sections */
-  .scroll-reveal:nth-child(1) { transition-delay: 0.1s; }
-  .scroll-reveal:nth-child(2) { transition-delay: 0.2s; }
-  .scroll-reveal:nth-child(3) { transition-delay: 0.3s; }
-  .scroll-reveal:nth-child(4) { transition-delay: 0.4s; }
-
-  /* Smooth out all transitions */
-  .section-content,
-  .timeline-content,
-  .timeline-node,
-  .timeline-curve {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
   /* Add subtle pulse animation to active timeline nodes */
   .active-section .timeline-node::after {
     content: '';
@@ -360,114 +342,16 @@ const { title } = Astro.props;
     100% { transform: scale(2); opacity: 0; }
   }
 
-  /* Navigation styles */
-  nav {
-    transform: translate(-50%, 0);
-    box-shadow: var(--card-shadow);
-  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
 
-  nav a {
-    position: relative;
-    white-space: nowrap;
-  }
-
-  nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 1px;
-    background: var(--text-secondary);
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-    opacity: 0;
-  }
-
-  nav a:hover::after {
-    width: 50%;
-    opacity: 0.5;
-  }
-
-  /* Theme-aware navigation styles */
-  :root {
-    --nav-bg: rgba(255, 255, 255, 0.8);
-    --nav-border: rgba(226, 232, 240, 0.8);
-    --nav-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1);
-    --nav-hover: rgba(241, 245, 249, 0.8);
-    --nav-active: rgba(226, 232, 240, 0.8);
-  }
-
-  .dark {
-    --nav-bg: rgba(24, 24, 27, 0.8);
-    --nav-border: rgba(63, 63, 70, 0.5);
-    --nav-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
-    --nav-hover: rgba(39, 39, 42, 0.8);
-    --nav-active: rgba(63, 63, 70, 0.8);
-  }
-
-  nav {
-    background: var(--nav-bg);
-    border-color: var(--nav-border);
-  }
-
-  @media (max-width: 640px) {
-    nav {
-      bottom: 4;
-      top: auto;
-      padding: 0.5rem;
-    }
-  }
-
-  /* Preview popup styles */
-  .preview-popup {
-    transform: translateY(10px) translateX(-50%);
-    pointer-events: none;
-    backdrop-filter: blur(8px);
-  }
-
-  .group:hover .preview-popup {
-    transform: translateY(0) translateX(-50%);
-    pointer-events: auto;
-  }
-
-  /* Add a subtle arrow */
-  .preview-popup::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -5px;
-    transform: translateX(-50%) rotate(45deg);
-    width: 10px;
-    height: 10px;
-    background: var(--bg-secondary);
-    border-right: 1px solid var(--border-primary);
-    border-bottom: 1px solid var(--border-primary);
-  }
-
-  /* Adjust preview for dark/light themes */
-  .preview-popup {
-    background: var(--bg-secondary);
-    border-color: var(--border-primary);
-    box-shadow: var(--card-shadow);
-  }
-
-  /* Ensure preview stays within viewport */
-  @media (max-width: 640px) {
-    .preview-popup {
-      width: calc(100vw - 2rem);
-      left: auto;
-      right: 0;
-      transform: translateY(10px);
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
     }
 
-    .group:hover .preview-popup {
-      transform: translateY(0);
-    }
-
-    .preview-popup::after {
-      left: auto;
-      right: 1rem;
+    .js .scroll-reveal:not(.revealed) {
+      transform: none;
     }
   }
 </style>

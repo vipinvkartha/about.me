@@ -2,11 +2,13 @@
 const sections = [
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' }
+  { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' }
 ];
 ---
 
-<nav class="fixed left-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-3xl backdrop-blur-md border transition-all duration-500 flex flex-col gap-3 nav-container">
+<!-- Hidden on phones, where it would take space from the content -->
+<nav aria-label="Sections" class="fixed left-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-3xl backdrop-blur-md border transition-all duration-500 hidden md:flex flex-col gap-3 nav-container">
   {sections.map(section => (
     <a
       href={`#${section.id}`}
@@ -113,16 +115,11 @@ const sections = [
     100% { transform: scale(2.5); opacity: 0; }
   }
 
-  @media (max-width: 1024px) {
+  /* Below this width the labels would overlap the content */
+  @media (max-width: 1279px) {
     .nav-container {
       left: 1rem;
       min-width: auto;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .nav-container {
-      left: 0.5rem;
       padding: 0.75rem;
     }
 
